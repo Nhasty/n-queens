@@ -78,50 +78,37 @@ window.countNRooksSolutions = function(n) {
 window.findNQueensSolution = function(n) {
   var solution = undefined; //fixme
   let board = new Board({n: n});
-  let count = 0;
-  if (n === 0) {
-    return [];
-  }
-  for (let i = 0; i < n; i++) {
-    board.togglePiece(0, i);
-    if (i > 0) {
-      board.togglePiece(0, i - 1);
-    }
-    for (let k = 0; k < n; k++) {
-      for (let j = 0; j < n; j++) {
-        if (board.attributes[k][j] !== 1) {
-          board.togglePiece(k, j);
-        }
-        if (board.hasAnyQueenConflictsOn(k, j)) {
-          board.togglePiece(k, j);
-        }
-      }
-    }
-  }
-  // board.togglePiece(0, 1);
-  // // iterate over length
-  //   board.togglePiece(i,i)
-  //   for (let j = 0; j < n; j++) {
-  //     board.togglePiece(i, j);
-  //     count++;
-  //     if (board.hasAnyQueenConflictsOn(i, j)) {
-  //       board.togglePiece(i, j);
-  //       count--;
-  //     }
 
-  //     if (count === n) {
-  //       console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  //       return board.attributes;
-  //     }
+  let size = n;
+  const findQueen = (row) => {
+    // base case
+    if (row === size) {
+      solution = board.rows();
+      return;
+    }
+
+    // iterate over instance
+    for (let col = 0; col < size; col++) {
+      board.togglePiece(row, col);
+      if (!board.hasAnyQueensConflicts()) {
+        findQueen(row + 1);
+      }
+      // if there's conflict, untoggle the piece
+      if (solution) {
+        return;
+      }
+      board.togglePiece(row, col);
+
+    }
+  };
+
+  findQueen(0);
+
   solution = board.rows();
-  //iterate over length
-  //toggle at (i,j)
-  // if hasAnyQueenConflictsOn (row, col)
-  //toggle off
-  // solution = board.rows
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };
+
 
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
