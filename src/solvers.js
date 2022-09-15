@@ -113,33 +113,36 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = 0; //fixme
-  const board = new Array(n).fill(0);
 
-  const isPromising = (board, row) => {
-    for (let i = 0; i < row; i++) {
-      if (board[i] === board[row] || Math.abs(board[row] - board[i]) === row - i) {
-        return false;
-      }
-    }
-    return true;
-  };
 
-  const backtrack = (board, row, n) => {
-    if (row === n) {
-      solutionCount += 1;
+
+  // count solutions
+  let solutions = 0;
+  // create a board
+  let board = new Board({n: n});
+  // define the size
+  let size = n;
+  // recursive function takes row
+  const findSolutions = row => {
+    if (row === size) {
+      solutions++;
       return;
-    } else {
-      for (let i = 0; i < n; i++) {
-        board[row] = i;
-        if (isPromising(board, row)) {
-          backtrack(board, row + 1, n);
-        }
+    }
+    for (let i = 0; i < size; i++) {
+      board.togglePiece(row, i);
+      if (!board.hasAnyQueensConflicts()) {
+        findSolutions(row + 1);
       }
+      board.togglePiece(row, i);
     }
   };
-
-  backtrack(board, 0, n);
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+    // base case if row = size
+      //increment solution count
+      // return to colse function
+    //iterate over current row
+      // toggle piece at (row, i)
+      // if no conflict recurse to next row
+      // if there is conflict or we are on our way out toggle off
+  findSolutions(0);
+  return solutions;
 };
