@@ -69,7 +69,7 @@
     \__ \ || (_| | |  | |_  | | | |  __/ | |  __/_
     |___/\__\__,_|_|   \__| |_| |_|\___|_|  \___(_)
 
- */
+   */
     /*=========================================================================
     =                 TODO: fill in these Helper Functions                    =
     =========================================================================*/
@@ -79,6 +79,7 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
+
       let row = this.rows()[rowIndex];
 
       return _.filter(row, num => num === 1).length > 1;
@@ -86,6 +87,7 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
+
       var rows = this.rows();
       return _.filter(rows, (row, rowIndex) => this.hasRowConflictAt(rowIndex) === true).length > 0;
     },
@@ -96,6 +98,7 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
+
       let col = _.pluck(this.rows(), colIndex);
       let cnt = 0;
       for (let i = 0; i < col.length; i++) {
@@ -184,13 +187,13 @@
       }
       return count > 1;
     },
-
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
       let board = this.rows();
 
       for (let i = 0; i < board.length; i++) {
         if (this.hasMinorDiagonalConflictAt(0, i) || this.hasMinorDiagonalConflictAt(i, board.length - 1)) {
+
           return true;
         }
       }
